@@ -118,6 +118,7 @@ func GetSaramaConfigFromClientProfile(profileName string) *sarama.Config {
 		saramaConfig.Net.SASL.Handshake = viper.GetBool("sasl." + saslName + ".handshake-first")
 		saramaConfig.Net.SASL.User = viper.GetString("sasl." + saslName + ".username")
 		saramaConfig.Net.SASL.Password = viper.GetString("sasl." + saslName + ".password")
+		saramaConfig.Net.SASL.Mechanism = viper.GetString("sasl." + saslName + ".mechanism")
 	}
 
 	return saramaConfig
