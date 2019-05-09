@@ -121,11 +121,15 @@ func GetSaramaConfigFromClientProfile(profileName string) *sarama.Config {
 		if mechanism != "" {
 			saramaConfig.Net.SASL.Mechanism = mechanism
 			if mechanism == "SCRAM-SHA-256" {
+				saramaConfig.Net.SASL.Mechanism = sarama.SASLMechanism(sarama.SASLTypeSCRAMSHA256)
 				saramaConfig.Net.SASL.SCRAMClientGeneratorFunc = func() sarama.SCRAMClient { return &XDGSCRAMClient{HashGeneratorFcn: SHA256} }
 			}
 			else if mechanism == "SCRAM-SHA-512" {
+				saramaConfig.Net.SASL.Mechanism = sarama.SASLMechanism(sarama.SASLTypeSCRAMSHA512)
 				saramaConfig.Net.SASL.SCRAMClientGeneratorFunc = func() sarama.SCRAMClient { return &XDGSCRAMClient{HashGeneratorFcn: SHA512} }
 			}
+		}else{
+			panic("No Mechanism set" + mechanism + err.Error())
 		}
 	}
 
