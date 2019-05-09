@@ -83,6 +83,7 @@ type metadataMember struct {
 // cluster name is unknown, or if the server list is missing or invalid, this func will panic.
 func (module *KafkaClient) Configure(name string, configRoot string) {
 	module.Log.Info("configuring")
+	sarama.Logger = module.Log.New(os.Stdout, "[sarama] ", log.LstdFlags)
 
 	module.name = name
 	module.quitChannel = make(chan struct{})
