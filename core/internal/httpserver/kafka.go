@@ -62,6 +62,9 @@ func getSASLProfile(name string) *httpResponseSASLProfile {
 		Name:           name,
 		HandshakeFirst: viper.GetBool(configRoot + ".handshake-first"),
 		Username:       viper.GetString(configRoot + ".username"),
+		Password:       viper.GetString(configRoot + ".password"),
+		Mechanism:       viper.GetString(configRoot + ".mechanism"),
+
 	}
 }
 

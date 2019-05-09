@@ -46,6 +46,8 @@ type httpResponseSASLProfile struct {
 	Name           string `json:"name"`
 	HandshakeFirst bool   `json:"handshake-first"`
 	Username       string `json:"username"`
+	Password       string `json:"password"`
+	Mechanism      string `json:"mechanism"`
 }
 
 type httpResponseClientProfile struct {
