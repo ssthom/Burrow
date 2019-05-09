@@ -113,12 +113,20 @@ func GetSaramaConfigFromClientProfile(profileName string) *sarama.Config {
 	// Configure SASL if enabled
 	if viper.IsSet(configRoot + ".sasl") {
 		saslName := viper.GetString(configRoot + ".sasl")
-
+		mechanism := viper.GetString("sasl." + saslName + ".mechanism")
 		saramaConfig.Net.SASL.Enable = true
 		saramaConfig.Net.SASL.Handshake = viper.GetBool("sasl." + saslName + ".handshake-first")
 		saramaConfig.Net.SASL.User = viper.GetString("sasl." + saslName + ".username")
 		saramaConfig.Net.SASL.Password = viper.GetString("sasl." + saslName + ".password")
-		saramaConfig.Net.SASL.Mechanism = viper.GetString("sasl." + saslName + ".mechanism")
+		if mechanism != "" {
+			saramaConfig.Net.SASL.Mechanism = mechanism
+			if mechanism == "SCRAM-SHA-256" {
+				saramaConfig.Net.SASL.SCRAMClientGeneratorFunc = func() sarama.SCRAMClient { return &XDGSCRAMClient{HashGeneratorFcn: SHA256} }
+			}
+			else if mechanism == "SCRAM-SHA-512" {
+				saramaConfig.Net.SASL.SCRAMClientGeneratorFunc = func() sarama.SCRAMClient { return &XDGSCRAMClient{HashGeneratorFcn: SHA512} }
+			}
+		}
 	}
 
 	return saramaConfig
